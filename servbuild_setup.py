@@ -31,6 +31,6 @@ PACKAGE_SECTION = "net"
 PACKAGE_MAINTAINER = "company <app@support.ru>"
 PACKAGE_DEPENDS_DEB = "libqt4-gui,libqt4-network,libqt4-sql,libqt4-sql-sqlite,libqt4-xml,libqt4-xmlpatterns,libqt4-declarative,libqt4-script,libopencv-imgproc2.4,libopencv-highgui2.4,libopencv-core2.4,libqtmultimediakit1,libquazip0"
 PACKAGE_DEPENDS_RPM = "libqt4,libqt4-sql,libqt4-sql-sqlite,libqt4-x11,libquazip1,libopencv2_4"
-PACKAGE_DEPENDS_RPM_FEDORA = "libqt4-gui,libqt4-network,libqt4-sql,libqt4-sql-sqlite,libqt4-xml,libqt4-xmlpatterns,libqt4-declarative,libqt4-script,libopencv-imgproc2.4,libopencv-highgui2.4,libopencv-core2.4,libqtmultimediakit1,libquazip0"
+PACKAGE_DEPENDS_RPM_FEDORA = "qt-x11,quazip"
 PACKAGE_PACKAGER_NAME = APPLICATION_NAME + " builder " + VERSION
 PACKAGE_DESCRIPTION = "app - nice application"
