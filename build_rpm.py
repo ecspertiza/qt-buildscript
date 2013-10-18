@@ -81,6 +81,9 @@ if not os.path.exists(build_path):
 #if not os.path.exists(build_path +"/"+ "DEBIAN"):
 #    os.makedirs(build_path +"/"+ "DEBIAN")
 
+
+################# BUILD OPEN SUSE RPM #####################
+
 if os.path.exists(se.APPLICATION_PATH + "/bin"):
     copyBinFiles()
 
@@ -92,6 +95,7 @@ if se.APPLICATION_ICON <> "":
     
 if se.APPLICATION_DESKTOP_FILE <> "":
     copyDesktopFile()
+
     
 file = open(se.SOURCE_PACKAGE_PATH + "/rpmbuild/" + se.PACKAGE_NAME + ".spec", 'w+')
 file.write("Summary: "+se.PACKAGE_DESCRIPTION + "\n")
@@ -123,6 +127,60 @@ for path, dirs, files in os.walk(build_path):
 file.close()
 
 os.system("rpmbuild -bb --buildroot="+build_path+" "+specfile)
-#shutil.copy(homedir + , build_path +"/usr/share/applications/")
 
-#os.system("fakeroot dpkg-deb --build " + build_path)
+
+for path, dirs, files in os.walk(homedir + "/rpmbuild/RPMS/" + arch):
+	if files <> []:
+	      for file_name in files:
+		      shutil.copy(path + "/" + file_name, se.SOURCE_PACKAGE_PATH + "/rpmbuild/" + se.PACKAGE_NAME + "-" + se.PACKAGE_SECTION + "_" + arch + "-" + "os.rpm")
+
+
+################# BUILD Fedor RPM #####################
+
+if os.path.exists(se.APPLICATION_PATH + "/bin"):
+    copyBinFiles()
+
+if os.path.exists(se.APPLICATION_PATH + "/lib"):
+    copyLibFiles()
+    
+if se.APPLICATION_ICON <> "":
+    copyIconFile()
+    
+if se.APPLICATION_DESKTOP_FILE <> "":
+    copyDesktopFile()
+
+file = open(se.SOURCE_PACKAGE_PATH + "/rpmbuild/" + se.PACKAGE_NAME + ".spec", 'w+')
+file.write("Summary: "+se.PACKAGE_DESCRIPTION + "\n")
+file.write("Name: "+se.PACKAGE_NAME + "\n")
+file.write("Version: "+se.PACKAGE_VERSION + "\n")
+file.write("Release: "+se.PACKAGE_VERSION + "\n")
+file.write("License: "+se.PACKAGE_LICENSE + "\n")
+file.write("Packager: "+se.PACKAGE_PACKAGER_NAME)
+file.write("Group: "+se.PACKAGE_SECTION+"\n")
+file.write("BuildRoot: "+ os.getcwd() + "/" + se.SOURCE_PACKAGE_PATH + "/rpmbuild/tmpbuild" + "\n")
+file.write("Provides: "+se.PACKAGE_NAME + "\n")
+file.write("Requires: "+se.PACKAGE_DEPENDS_RPM_FEDORA + "\n")
+file.write("\n\n")
+
+file.write("%description\n")
+file.write(se.PACKAGE_DESCRIPTION + "\n\n")
+file.write("%files\n")     
+
+for path, dirs, files in os.walk(build_path):
+	p = path[len(build_path):]
+	if dirs <> []:
+		for dir in dirs:
+			file.write("%dir " + str(p + "/" + dir + "/") + "\n")
+
+	if files <> []:
+		for file_name in files:
+			file.write("\"" + str(p + "/" + file_name) + "\"\n")
+
+file.close()
+
+os.system("rpmbuild -bb --buildroot="+build_path+" "+specfile)
+
+for path, dirs, files in os.walk(homedir + "/rpmbuild/RPMS/" + arch):
+	if files <> []:
+	      for file_name in files:
+		      shutil.copy(path + "/" + file_name, se.SOURCE_PACKAGE_PATH + "/rpmbuild/" + se.PACKAGE_NAME + "-" + se.PACKAGE_SECTION + "_" + arch + "-" + "fr.rpm")
